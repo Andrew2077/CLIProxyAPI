@@ -900,9 +900,6 @@ func ensureImageGenerationTool(body []byte, baseModel string, auth *cliproxyauth
 	if strings.HasSuffix(baseModel, "spark") {
 		return body
 	}
-	if isCodexFreePlanAuth(auth) {
-		return body
-	}
 
 	tools := gjson.GetBytes(body, "tools")
 	if !tools.Exists() || !tools.IsArray() {

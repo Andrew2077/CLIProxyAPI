@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	defaultImagesMainModel = "gpt-5.4-mini"
+	defaultImagesMainModel = "gpt-5.4"
 	defaultImagesToolModel = "gpt-image-2"
 	imagesGenerationsPath  = "/v1/images/generations"
 	imagesEditsPath        = "/v1/images/edits"
@@ -584,7 +584,6 @@ func (h *OpenAIAPIHandler) collectImagesFromResponses(c *gin.Context, responsesR
 	c.Header("Content-Type", "application/json")
 
 	cliCtx, cliCancel := h.GetContextWithCancel(h, c, context.Background())
-	cliCtx = handlers.WithDisallowFreeAuth(cliCtx)
 	stopKeepAlive := h.StartNonStreamingKeepAlive(c, cliCtx)
 
 	mainModel := strings.TrimSpace(gjson.GetBytes(responsesReq, "model").String())
@@ -778,7 +777,6 @@ func (h *OpenAIAPIHandler) streamImagesFromResponses(c *gin.Context, responsesRe
 	}
 
 	cliCtx, cliCancel := h.GetContextWithCancel(h, c, context.Background())
-	cliCtx = handlers.WithDisallowFreeAuth(cliCtx)
 	mainModel := strings.TrimSpace(gjson.GetBytes(responsesReq, "model").String())
 	if mainModel == "" {
 		mainModel = defaultImagesMainModel
